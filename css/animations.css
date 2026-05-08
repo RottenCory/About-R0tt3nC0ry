@@ -1,0 +1,468 @@
+/* ============================================
+   ANIMATIONS CSS - All Features
+   ============================================ */
+
+/* Loading Animation */
+.loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--primary-dark);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    animation: fadeOut 0.8s ease-in-out 1.2s forwards;
+}
+
+.loader-spinner {
+    width: 60px;
+    height: 60px;
+    border: 5px solid var(--accent-green);
+    border-top-color: var(--accent-green-light);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes fadeOut {
+    to {
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+
+/* Scroll Animations */
+.fade-in {
+    opacity: 0;
+    animation: slideInUp 0.8s ease-out forwards;
+}
+
+.fade-in:nth-child(1) { animation-delay: 0.1s; }
+.fade-in:nth-child(2) { animation-delay: 0.2s; }
+.fade-in:nth-child(3) { animation-delay: 0.3s; }
+.fade-in:nth-child(4) { animation-delay: 0.4s; }
+.fade-in:nth-child(5) { animation-delay: 0.5s; }
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Enhanced Button Animations */
+.btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn:hover {
+    animation: buttonPulse 0.6s ease-out;
+}
+
+@keyframes buttonPulse {
+    0% {
+        transform: scale(1) rotate(0deg);
+    }
+    50% {
+        transform: scale(1.08) rotate(2deg);
+    }
+    100% {
+        transform: scale(1.05) rotate(0deg);
+    }
+}
+
+/* Button shine effect (optional) */
+.btn-shine::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s;
+}
+
+.btn-shine:hover::before {
+    left: 100%;
+}
+
+/* Mobile Menu Animation */
+.menu-btn {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 200;
+}
+
+.menu-btn span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background-color: var(--accent-green);
+    margin: 5px 0;
+    transition: all 0.3s ease;
+    border-radius: 2px;
+}
+
+.menu-btn.active span:nth-child(1) {
+    transform: rotate(45deg) translate(10px, 10px);
+}
+
+.menu-btn.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.menu-btn.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -7px);
+}
+
+/* Mobile Menu Slide Animation */
+.nav-menu {
+    animation: menuSlideIn 0.4s ease-out;
+}
+
+@keyframes menuSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Back to Top Button */
+.back-to-top {
+    position: fixed;
+    bottom: -50px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    background-color: var(--accent-green);
+    color: var(--primary-dark);
+    border: none;
+    border-radius: 50%;
+    font-size: 24px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 99;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.back-to-top.show {
+    bottom: 30px;
+    animation: popUp 0.5s ease-out;
+}
+
+.back-to-top:hover {
+    background-color: var(--accent-green-light);
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(93, 157, 123, 0.3);
+}
+
+@keyframes popUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Search Container */
+.search-container {
+    position: relative;
+    margin-bottom: 2rem;
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.search-input {
+    flex: 1;
+    min-width: 200px;
+    padding: 0.75rem 1rem;
+    background-color: var(--secondary-dark);
+    border: 2px solid var(--accent-green);
+    color: var(--text-light);
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--accent-green-light);
+    box-shadow: 0 0 10px rgba(93, 157, 123, 0.2);
+    background-color: var(--primary-dark);
+}
+
+.search-btn {
+    padding: 0.75rem 1.5rem;
+    background-color: var(--accent-green);
+    color: var(--primary-dark);
+    border: 2px solid var(--accent-green);
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.search-btn:hover {
+    background-color: var(--accent-green-light);
+    transform: scale(1.05);
+}
+
+/* Search Results Dropdown */
+.search-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: var(--secondary-dark);
+    border: 2px solid var(--accent-green);
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+    max-height: 300px;
+    overflow-y: auto;
+    display: none;
+    z-index: 100;
+    animation: slideDown 0.3s ease-out;
+}
+
+.search-results.show {
+    display: block;
+}
+
+.search-result-item {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.search-result-item:hover {
+    background-color: var(--primary-dark);
+    padding-left: 1.5rem;
+    color: var(--accent-green-light);
+}
+
+.search-result-item:last-child {
+    border-bottom: none;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Table of Contents */
+.table-of-contents {
+    background-color: var(--secondary-dark);
+    border: 2px solid var(--accent-green);
+    border-radius: 4px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    animation: slideInLeft 0.6s ease-out;
+}
+
+.table-of-contents h3 {
+    color: var(--accent-green-light);
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+}
+
+.table-of-contents ul {
+    list-style: none;
+}
+
+.table-of-contents li {
+    margin-bottom: 0.5rem;
+}
+
+.table-of-contents a {
+    color: var(--accent-green);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    padding-left: 0.5rem;
+}
+
+.table-of-contents a:hover {
+    color: var(--accent-green-light);
+    padding-left: 1rem;
+    text-decoration: underline;
+}
+
+/* Card Animation on Scroll */
+.card {
+    animation: slideInUp 0.6s ease-out;
+}
+
+.card:nth-child(1) { animation-delay: 0s; }
+.card:nth-child(2) { animation-delay: 0.1s; }
+.card:nth-child(3) { animation-delay: 0.2s; }
+.card:nth-child(4) { animation-delay: 0.3s; }
+
+/* Hero Section Animation */
+.hero {
+    animation: slideInUp 0.8s ease-out;
+}
+
+.hero h1 {
+    animation: slideInDown 0.8s ease-out;
+}
+
+@keyframes slideInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Content Section Animation */
+.content {
+    animation: slideInUp 1s ease-out 0.2s forwards;
+    opacity: 0;
+}
+
+/* Responsive Design for Mobile Menu */
+@media (max-width: 768px) {
+    .menu-btn {
+        display: block;
+    }
+
+    .nav-menu {
+        position: absolute;
+        top: 70px;
+        left: -100%;
+        flex-direction: column;
+        background-color: var(--secondary-dark);
+        width: 100%;
+        text-align: center;
+        transition: left 0.3s ease;
+        padding: 2rem 0;
+        gap: 0;
+        border-bottom: 2px solid var(--accent-green);
+    }
+
+    .nav-menu.active {
+        left: 0;
+    }
+
+    .nav-menu li {
+        padding: 1rem 0;
+    }
+
+    .back-to-top {
+        width: 45px;
+        height: 45px;
+        font-size: 20px;
+        right: 20px;
+    }
+
+    .back-to-top.show {
+        bottom: 20px;
+    }
+
+    .search-container {
+        flex-direction: column;
+    }
+
+    .search-input {
+        min-width: auto;
+    }
+
+    .search-btn {
+        width: 100%;
+    }
+
+    .table-of-contents {
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .loader-spinner {
+        width: 45px;
+        height: 45px;
+        border: 4px solid var(--accent-green);
+    }
+
+    .back-to-top {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+        right: 15px;
+    }
+
+    .back-to-top.show {
+        bottom: 15px;
+    }
+
+    .table-of-contents {
+        padding: 0.75rem;
+        margin-bottom: 1rem;
+    }
+
+    .table-of-contents h3 {
+        font-size: 0.95rem;
+    }
+
+    .table-of-contents a {
+        font-size: 0.9rem;
+    }
+}
