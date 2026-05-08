@@ -5,11 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home - My Website</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
 </head>
 <body>
+    <!-- LOADING ANIMATION -->
+    <div class="loader">
+        <div class="loader-spinner"></div>
+    </div>
+
+    <!-- NAVIGATION WITH MOBILE MENU -->
     <nav class="navbar">
         <div class="nav-container">
             <a href="index.html" class="logo">⚠︎</a>
+            <button class="menu-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
             <ul class="nav-menu">
                 <li><a href="index.html" class="nav-link active">Home</a></li>
                 <li><a href="about.html" class="nav-link">About Me</a></li>
@@ -21,14 +33,23 @@
     </nav>
 
     <main class="container">
+        <!-- SEARCH BAR -->
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="Search content...">
+            <button class="search-btn">Search</button>
+            <div class="search-results"></div>
+        </div>
+
+        <!-- TABLE OF CONTENTS -->
+        <div class="table-of-contents"></div>
+
         <section class="hero">
             <h1>Welcome</h1>
             <p>Get to know me better :D </p>
         </section>
 
-        <section class="content">
+        <section id="who-am-i" class="content">
             <h2>Who Am I?</h2>
-            <!-- ADD YOUR CONTENT HERE -->
             <p>Hello! My name is Cory, and this is a website I've set up to share my life, exsperiences, and hopefully encourage others to do the same! 
             I want to be very open about my identity, and many other aspects in my life that is often brushed off or avoided. </p>
             
@@ -52,8 +73,14 @@
         </section>
     </main>
 
+    <!-- BACK TO TOP BUTTON -->
+    <button class="back-to-top">↑</button>
+
     <footer>
         <p>&copy; 2026 My Website. All rights reserved.</p>
     </footer>
+
+    <!-- SCRIPTS -->
+    <script src="js/script.js"></script>
 </body>
 </html>
