@@ -1,56 +1,45 @@
 /* ============================================
-   JAVASCRIPT - All Features Implementation
+   MAIN SCRIPT - All Features JavaScript
    ============================================ */
 
 // ============================================
-// 1. LOADING ANIMATION
-// ============================================
-window.addEventListener('load', function() {
-    const loader = document.querySelector('.loader');
-    if (loader) {
-        setTimeout(() => {
-            loader.style.display = 'none';
-        }, 2000);
-    }
-});
-
-// ============================================
-// 2. MOBILE MENU TOGGLE
+// 1. MOBILE MENU FUNCTIONALITY
 // ============================================
 const menuBtn = document.querySelector('.menu-btn');
 const navMenu = document.querySelector('.nav-menu');
+const navLinks = document.querySelectorAll('.nav-link');
 
+// Toggle menu when hamburger is clicked
 if (menuBtn) {
-    menuBtn.addEventListener('click', function() {
+    menuBtn.addEventListener('click', () => {
         menuBtn.classList.toggle('active');
         navMenu.classList.toggle('active');
     });
-
-    // Close menu when clicking on a link
-    const navLinks = document.querySelectorAll('.nav-link');
-    navLinks.forEach(link => {
-        link.addEventListener('click', function() {
-            menuBtn.classList.remove('active');
-            navMenu.classList.remove('active');
-        });
-    });
 }
 
+// Close menu when a link is clicked
+navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+        menuBtn.classList.remove('active');
+        navMenu.classList.remove('active');
+    });
+});
+
 // ============================================
-// 3. BACK TO TOP BUTTON
+// 2. BACK TO TOP BUTTON
 // ============================================
 const backToTopBtn = document.querySelector('.back-to-top');
 
-if (backToTopBtn) {
-    window.addEventListener('scroll', function() {
-        if (window.pageYOffset > 300) {
-            backToTopBtn.classList.add('show');
-        } else {
-            backToTopBtn.classList.remove('show');
-        }
-    });
+window.addEventListener('scroll', () => {
+    if (window.pageYOffset > 300) {
+        backToTopBtn.classList.add('show');
+    } else {
+        backToTopBtn.classList.remove('show');
+    }
+});
 
-    backToTopBtn.addEventListener('click', function() {
+if (backToTopBtn) {
+    backToTopBtn.addEventListener('click', () => {
         window.scrollTo({
             top: 0,
             behavior: 'smooth'
@@ -59,14 +48,14 @@ if (backToTopBtn) {
 }
 
 // ============================================
-// 4. ANIMATED SCROLL EFFECTS
+// 3. SCROLL ANIMATIONS
 // ============================================
 const observerOptions = {
     threshold: 0.1,
     rootMargin: '0px 0px -100px 0px'
 };
 
-const observer = new IntersectionObserver(function(entries) {
+const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             entry.target.classList.add('fade-in');
@@ -75,10 +64,59 @@ const observer = new IntersectionObserver(function(entries) {
     });
 }, observerOptions);
 
-// Observe cards and sections
-document.querySelectorAll('.card, .content, .hero').forEach(el => {
-    observer.observe(el);
+// Observe all cards
+document.querySelectorAll('.card').forEach(card => {
+    observer.observe(card);
 });
+
+// ============================================
+// 4. TABLE OF CONTENTS GENERATION
+// ============================================
+function generateTableOfContents() {
+    const toc = document.querySelector('.table-of-contents');
+    if (!toc) return;
+
+    const headings = document.querySelectorAll('h2, h3');
+    
+    if (headings.length === 0) {
+        toc.style.display = 'none';
+        return;
+    }
+
+    let tocHTML = '<h3>📑 Table of Contents</h3><ul>';
+    
+    headings.forEach((heading, index) => {
+        if (!heading.id) {
+            heading.id = `heading-${index}`;
+        }
+        
+        const level = heading.tagName === 'H2' ? 0 : 1;
+        const indent = level > 0 ? 'margin-left: 1.5rem;' : '';
+        
+        tocHTML += `<li style="${indent}"><a href="#${heading.id}">${heading.textContent}</a></li>`;
+    });
+    
+    tocHTML += '</ul>';
+    toc.innerHTML = tocHTML;
+
+    // Add smooth scroll to TOC links
+    document.querySelectorAll('.table-of-contents a').forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetId = link.getAttribute('href').substring(1);
+            const targetElement = document.getElementById(targetId);
+            if (targetElement) {
+                targetElement.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+}
+
+// Generate TOC on page load
+document.addEventListener('DOMContentLoaded', generateTableOfContents);
 
 // ============================================
 // 5. SEARCH FUNCTIONALITY
@@ -93,60 +131,48 @@ function performSearch(query) {
         return;
     }
 
-    const allText = document.body.innerText.toLowerCase();
+    const query_lower = query.toLowerCase();
     const results = [];
 
-    // Search in headings
-    document.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach(heading => {
-        if (heading.textContent.toLowerCase().includes(query.toLowerCase())) {
-            results.push({
-                text: heading.textContent.trim(),
-                element: heading,
-                type: 'heading'
-            });
+    // Search in all sections
+    document.querySelectorAll('section, .card').forEach(section => {
+        const text = section.textContent.toLowerCase();
+        if (text.includes(query_lower)) {
+            // Get heading or card title
+            const heading = section.querySelector('h2, h3');
+            const title = heading ? heading.textContent : section.textContent.substring(0, 50) + '...';
+            
+            if (!results.find(r => r.title === title)) {
+                results.push({
+                    title: title,
+                    element: section
+                });
+            }
         }
     });
 
-    // Search in paragraphs
-    document.querySelectorAll('p').forEach(p => {
-        if (p.textContent.toLowerCase().includes(query.toLowerCase())) {
-            const preview = p.textContent.substring(0, 50) + '...';
-            results.push({
-                text: preview,
-                element: p,
-                type: 'paragraph'
-            });
-        }
-    });
-
-    // Display results
-    displaySearchResults(results.slice(0, 10), query);
+    displaySearchResults(results, query);
 }
 
 function displaySearchResults(results, query) {
-    searchResults.innerHTML = '';
-
     if (results.length === 0) {
-        searchResults.innerHTML = '<div class="search-result-item">No results found</div>';
+        searchResults.innerHTML = '<div class="search-result-item">No results found for "' + query + '"</div>';
     } else {
-        results.forEach(result => {
-            const resultItem = document.createElement('div');
-            resultItem.className = 'search-result-item';
-            
-            // Highlight the search term
-            const highlightedText = result.text.replace(
-                new RegExp(query, 'gi'),
-                match => `<strong>${match}</strong>`
-            );
-            resultItem.innerHTML = highlightedText;
+        searchResults.innerHTML = results.map(result => 
+            `<div class="search-result-item">${result.title}</div>`
+        ).join('');
 
-            resultItem.addEventListener('click', function() {
-                result.element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        // Add click handlers to results
+        document.querySelectorAll('.search-result-item').forEach((item, index) => {
+            item.addEventListener('click', () => {
+                const element = results[index].element;
+                element.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
                 searchResults.classList.remove('show');
                 searchInput.value = '';
             });
-
-            searchResults.appendChild(resultItem);
         });
     }
 
@@ -154,78 +180,76 @@ function displaySearchResults(results, query) {
 }
 
 if (searchInput) {
-    searchInput.addEventListener('input', function(e) {
+    searchInput.addEventListener('input', (e) => {
         performSearch(e.target.value);
     });
 }
 
 if (searchBtn) {
-    searchBtn.addEventListener('click', function() {
+    searchBtn.addEventListener('click', () => {
         performSearch(searchInput.value);
     });
 }
 
 // Close search results when clicking outside
-document.addEventListener('click', function(e) {
-    if (!e.target.closest('.search-container') && searchResults) {
+document.addEventListener('click', (e) => {
+    if (!e.target.closest('.search-container')) {
         searchResults.classList.remove('show');
     }
 });
 
 // ============================================
-// 6. TABLE OF CONTENTS GENERATION
+// 6. PAGE LOAD ANIMATION
 // ============================================
-function generateTableOfContents() {
-    const toc = document.querySelector('.table-of-contents');
-    if (!toc) return;
+window.addEventListener('load', () => {
+    const loader = document.querySelector('.loader');
+    if (loader) {
+        setTimeout(() => {
+            loader.style.display = 'none';
+        }, 2000);
+    }
+});
 
-    const headings = document.querySelectorAll('h2, h3');
-    const tocList = document.createElement('div');
-    tocList.innerHTML = '<h3>Table of Contents</h3><ul></ul>';
-    const list = tocList.querySelector('ul');
-
-    headings.forEach((heading, index) => {
-        // Add ID to heading if it doesn't have one
-        if (!heading.id) {
-            heading.id = `section-${index}`;
+// ============================================
+// 7. ACTIVE NAV LINK TRACKING
+// ============================================
+window.addEventListener('scroll', () => {
+    let current = '';
+    
+    document.querySelectorAll('section').forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.clientHeight;
+        
+        if (scrollY >= sectionTop - 200) {
+            current = section.getAttribute('id');
         }
-
-        // Create TOC item
-        const level = heading.tagName === 'H2' ? 1 : 2;
-        const li = document.createElement('li');
-        li.style.marginLeft = (level - 1) * 20 + 'px';
-
-        const link = document.createElement('a');
-        link.href = `#${heading.id}`;
-        link.textContent = heading.textContent;
-
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            heading.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        });
-
-        li.appendChild(link);
-        list.appendChild(li);
     });
 
-    toc.innerHTML = '';
-    toc.appendChild(tocList);
-}
-
-// Generate TOC on page load
-document.addEventListener('DOMContentLoaded', generateTableOfContents);
+    navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${current}` || 
+            (current === '' && link.getAttribute('href') === 'index.html')) {
+            link.classList.add('active');
+        }
+    });
+});
 
 // ============================================
-// 7. ANALYTICS INTEGRATION
+// 8. GOOGLE ANALYTICS INTEGRATION
 // ============================================
 function initializeAnalytics() {
-    // Replace 'G-XXXXXXXXXX' with your Google Analytics Measurement ID
-    const measurementId = 'G-XXXXXXXXXX';
-
+    const measurementId = 'G-XXXXXXXXXX'; // Replace with your Google Analytics ID
+    
     if (measurementId === 'G-XXXXXXXXXX') {
-        console.log('Analytics: Please replace G-XXXXXXXXXX with your actual Measurement ID');
+        console.log('⚠️ Analytics: Please replace G-XXXXXXXXXX with your Google Analytics ID in js/script.js');
         return;
     }
+
+    // Create global gtag function
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', measurementId);
 
     // Load Google Analytics script
     const script = document.createElement('script');
@@ -233,58 +257,43 @@ function initializeAnalytics() {
     script.src = `https://www.googletagmanager.com/gtag/js?id=${measurementId}`;
     document.head.appendChild(script);
 
-    // Initialize gtag
-    window.dataLayer = window.dataLayer || [];
-    function gtag() {
-        dataLayer.push(arguments);
-    }
-    gtag('js', new Date());
-    gtag('config', measurementId);
-
-    // Track page views
-    gtag('event', 'page_view', {
-        'page_title': document.title,
-        'page_path': window.location.pathname
-    });
-
-    console.log('Analytics initialized with ID:', measurementId);
+    console.log('✓ Analytics initialized with ID:', measurementId);
 }
 
-// Initialize analytics
-initializeAnalytics();
+// Initialize analytics when page loads
+document.addEventListener('DOMContentLoaded', initializeAnalytics);
 
 // ============================================
-// 8. SMOOTH SCROLLING FOR ANCHOR LINKS
+// 9. SMOOTH SCROLL FOR ALL ANCHOR LINKS
 // ============================================
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
+    anchor.addEventListener('click', function (e) {
         const href = this.getAttribute('href');
-        if (href === '#') return;
-
-        e.preventDefault();
-        const target = document.querySelector(href);
-        if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
+        if (href !== '#') {
+            e.preventDefault();
+            const target = document.querySelector(href);
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
         }
     });
 });
 
 // ============================================
-// 9. UTILITY: Print current analytics status
+// 10. ENHANCED BUTTON ANIMATIONS
 // ============================================
-function checkAnalyticsStatus() {
-    if (window.gtag) {
-        console.log('✓ Analytics is active');
-    } else {
-        console.log('✗ Analytics not yet loaded');
-    }
-}
+document.querySelectorAll('.btn').forEach(btn => {
+    btn.addEventListener('mouseenter', function() {
+        this.style.transform = 'scale(1.05) rotate(1deg)';
+    });
+    
+    btn.addEventListener('mouseleave', function() {
+        this.style.transform = 'scale(1) rotate(0deg)';
+    });
+});
 
-// ============================================
-// INITIALIZATION
-// ============================================
 console.log('✓ All features loaded successfully!');
-console.log('Features: Loading Animation, Mobile Menu, Back-to-Top, Scroll Effects, Search, TOC, Analytics');
+console.log('📑 Features: Mobile Menu, Animations, Search, TOC, Back to Top, Analytics');
