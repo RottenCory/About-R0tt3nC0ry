@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community - Share Your Experiences</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/community.css">
+</head>
+<body>
+    <!-- LOADING ANIMATION -->
+    <div class="loader">
+        <div class="loader-spinner"></div>
+    </div>
+
+    <!-- NAVIGATION WITH MOBILE MENU -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">⚠︎</a>
+            <button class="menu-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="about.html" class="nav-link">About Me</a></li>
+                <li><a href="personality.html" class="nav-link">Personality</a></li>
+                <li><a href="interests.html" class="nav-link">Interests</a></li>
+                <li><a href="community.html" class="nav-link active">Community</a></li>
+                <li><a href="contact.html" class="nav-link">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container">
+        <!-- HERO SECTION -->
+        <section class="hero">
+            <h1>Community</h1>
+            <p>Share your experiences and connect with others 💫</p>
+        </section>
+
+        <!-- INTRODUCTION -->
+        <section class="content">
+            <h2>Share Your Story</h2>
+            <p>This is a safe space for everyone to share their experiences, challenges, and growth. Your story matters and can inspire others. All submissions are welcomed and celebrated!</p>
+        </section>
+
+        <!-- EXPERIENCE FORM -->
+        <section class="experience-form-section">
+            <div class="form-container">
+                <h2>📝 Share Your Experience</h2>
+                
+                <form id="experienceForm" class="experience-form">
+                    <!-- Name Input -->
+                    <div class="form-group">
+                        <label for="name">Your Name (or Anonymous)</label>
+                        <input 
+                            type="text" 
+                            id="name" 
+                            placeholder="e.g., Alex, Anon, Jamie..."
+                            maxlength="50"
+                        >
+                    </div>
+
+                    <!-- Category Selection -->
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <select id="category">
+                            <option value="">Select a category...</option>
+                            <option value="identity">Identity & Self-Discovery</option>
+                            <option value="relationships">Relationships & Connections</option>
+                            <option value="mental-health">Mental Health & Wellness</option>
+                            <option value="challenges">Overcoming Challenges</option>
+                            <option value="growth">Personal Growth</option>
+                            <option value="inspiration">Inspiration & Motivation</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <!-- Experience Text -->
+                    <div class="form-group">
+                        <label for="experience">Your Experience</label>
+                        <textarea 
+                            id="experience" 
+                            placeholder="Share your experience, story, or thoughts... (min 10 characters, max 500)"
+                            rows="6"
+                            minlength="10"
+                            maxlength="500"
+                        ></textarea>
+                        <span class="char-count"><span id="charCount">0</span>/500</span>
+                    </div>
+
+                    <!-- Mood/Emoji Selection -->
+                    <div class="form-group">
+                        <label>How are you feeling?</label>
+                        <div class="emoji-selector">
+                            <button type="button" class="emoji-btn" data-emoji="😊" title="Happy">😊</button>
+                            <button type="button" class="emoji-btn" data-emoji="😢" title="Sad">😢</button>
+                            <button type="button" class="emoji-btn" data-emoji="💪" title="Strong">💪</button>
+                            <button type="button" class="emoji-btn" data-emoji="🤔" title="Thoughtful">🤔</button>
+                            <button type="button" class="emoji-btn" data-emoji="😍" title="Grateful">😍</button>
+                            <button type="button" class="emoji-btn" data-emoji="😴" title="Tired">😴</button>
+                            <button type="button" class="emoji-btn" data-emoji="🔥" title="Motivated">🔥</button>
+                            <button type="button" class="emoji-btn" data-emoji="💚" title="Love">💚</button>
+                        </div>
+                        <input type="hidden" id="selectedEmoji" value="">
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn btn-submit">Share Your Experience ✨</button>
+                    <p class="form-note">Your story will appear anonymously or with the name you provide.</p>
+                </form>
+            </div>
+        </section>
+
+        <!-- FILTERS & STATS -->
+        <section class="community-controls">
+            <div class="stats">
+                <div class="stat-card">
+                    <span class="stat-number" id="totalCount">0</span>
+                    <span class="stat-label">Stories Shared</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="totalLikes">0</span>
+                    <span class="stat-label">Total Likes</span>
+                </div>
+            </div>
+
+            <div class="filters">
+                <button class="filter-btn active" data-filter="all">All Stories</button>
+                <button class="filter-btn" data-filter="trending">🔥 Trending</button>
+                <button class="filter-btn" data-filter="recent">📅 Recent</button>
+            </div>
+
+            <div class="category-filter">
+                <label for="categoryFilter">Filter by Category:</label>
+                <select id="categoryFilter">
+                    <option value="">All Categories</option>
+                    <option value="identity">Identity & Self-Discovery</option>
+                    <option value="relationships">Relationships & Connections</option>
+                    <option value="mental-health">Mental Health & Wellness</option>
+                    <option value="challenges">Overcoming Challenges</option>
+                    <option value="growth">Personal Growth</option>
+                    <option value="inspiration">Inspiration & Motivation</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+        </section>
+
+        <!-- EXPERIENCES FEED -->
+        <section class="experiences-feed">
+            <h2>✨ Community Stories</h2>
+            <div id="experiencesFeed" class="feed-container">
+                <div class="empty-state">
+                    <p>🌱 No stories yet. Be the first to share! 💫</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CALL TO ACTION -->
+        <section class="cta-section">
+            <h3>Your voice matters!</h3>
+            <p>Whether your story is big or small, happy or challenging, we want to hear it. Share what's on your mind and connect with our community.</p>
+        </section>
+    </main>
+
+    <!-- BACK TO TOP BUTTON -->
+    <button class="back-to-top">↑</button>
+
+    <footer>
+        <p>&copy; 2026 My Website. All rights reserved.</p>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script src="js/script.js"></script>
+    <script src="js/community.js"></script>
+</body>
+</html>
